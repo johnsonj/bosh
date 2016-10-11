@@ -191,6 +191,9 @@ module Bosh
           uri = options[:port].nil? ? host : "#{host}:#{options[:port]}"
           aws_options[:endpoint] = "#{protocol}://#{uri}"
           aws_options[:region] = BLANK_REGION
+          # Don't use the region redirect hack if the user has specified a custom host
+          # A custom host should be s3 compatible, not actually S3, so the hack does not apply.
+          @region_configured = true
         end
 
         aws_options[:signature_version] = 's3' unless use_v4_signing?(options)

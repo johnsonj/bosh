@@ -406,6 +406,16 @@ module Bosh::Blobstore
           client.exists?('fake-oid')
         end
       end
+
+      context 'with host options' do
+        let(:options) { { bucket_name: 'fake-bucket', host: 'our.userdefined.com', access_key_id: 'KEY', secret_access_key: 'SECRET' } }
+
+        it 'should not try to probe for AWS redirect' do
+          expect(s3_client).not_to receive(:list_objects)
+          expect(blob).to receive(:exists?)
+          client.exists?('fake-oid')
+        end
+      end
     end
 
     describe '#delete' do
